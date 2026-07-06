@@ -1,23 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Chewy&family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Archivo+Black&family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   /* CAMBIA AQUÍ LAS TIPOGRAFÍAS DEL MENÚ (Usa Google Fonts) */
   --font-sans: "Nunito", "Inter", system-ui, -apple-system, sans-serif;
-  --font-title: "Chewy", sans-serif;   /* Tipografía para Títulos (ej. Chewy, Playfair, etc.) */
-  --font-category: "Fredoka", sans-serif; /* Tipografía para Categorías */
-  --font-dish: "Quicksand", sans-serif;     /* Tipografía para Platos y Precios */
-  --font-slogan: "Quicksand", sans-serif;  /* Tipografía para Eslogans/Marquee (ej. Quicksand) */
+  --font-title: "Cinzel", serif;   /* Tipografía clásica con remates (Serif) */
+  --font-category: "Archivo Black", sans-serif; /* Tipografía para Categorías/Direcciones (Sans-serif gruesa/pesada) */
+  --font-dish: "Fredoka", sans-serif;     /* Tipografía para Platos y Precios */
+  --font-slogan: "Fredoka", sans-serif;  /* Tipografía para Eslogans/Marquee */
   
-  /* CAMBIA AQUÍ LOS COLORES DEL MENÚ (Usa formato HEX) */
-  --color-primary: #E91E63;      /* Color principal de la marca (Fucsia/Magenta) */
-  --color-secondary: #8BC34A;    /* Color de acento/secundario (Verde Kiwi) */
-  --color-dark: #4A148C;         /* Color de texto oscuro principal (Morado Oscuro) */
-  --color-light: #FDF2F8;        /* Color de fondo del body (Rosa Pálido) */
+  /* COLORES DE EL BARQUERO (Estilo Náutico) */
+  --color-primary: #38bdf8;      /* Celeste / Azul claro (Velas) */
+  --color-secondary: #8B5A2B;    /* Marrón (Casco, mástiles y dirección) */
+  --color-dark: #FFFFFF;         /* Texto claro sobre fondo oscuro */
+  --color-light: #0d0f12;        /* Fondo general negro / gris muy oscuro */
   
-  --shadow-glass: 0 8px 32px 0 rgba(233, 30, 99, 0.08);
-  --glass-bg: rgba(255, 255, 255, 0.95);
-  --glass-border: rgba(255, 255, 255, 0.4);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --glass-bg: rgba(20, 24, 30, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 body {
@@ -25,6 +25,15 @@ body {
   color: var(--color-dark);
   -webkit-font-smoothing: antialiased;
   font-family: var(--font-sans);
+}
+
+/* Efecto de volumen, contorno blanco y sombra para el título principal El Barquero */
+.logo-title-effect {
+  font-family: var(--font-title);
+  background: linear-gradient(180deg, #38bdf8 30%, #0284c7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(2px 2px 0px #ffffff) drop-shadow(-2px -2px 0px #ffffff) drop-shadow(2px -2px 0px #ffffff) drop-shadow(-2px 2px 0px #ffffff) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.8));
 }
 
 .glass {
@@ -56,7 +65,7 @@ body {
 }
 
 .shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
