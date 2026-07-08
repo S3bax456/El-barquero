@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { ShoppingBag, Plus, Minus, ChevronRight, X, Trash2, Utensils, Facebook, MapPin, Loader2, Gift, Star } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, ChevronRight, X, Trash2, Utensils, Facebook, MapPin, Loader2, Gift, Star, Phone, Clock, Wine, Navigation, CreditCard, Smartphone, Coins, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { fetchSheetData, submitSheetData, SheetDish, SheetCategory, SHEET_ID } from './services/googleSheets';
 import { DEFAULT_MENU_DATA } from './data/menuData';
@@ -7,12 +7,17 @@ import { DEFAULT_MENU_DATA } from './data/menuData';
 // ==========================================
 // 📋 CONFIGURACIÓN DE LA PLANTILLA DEL MENÚ
 // ==========================================
-const RESTAURANTE_NAME = "El Barquero";
+const RESTAURANTE_NAME = "El Barquero Restaurant";
 const RESTAURANTE_SLOGAN = "Sabor Clásico & Tradición Marina";
-const WHATSAPP_NUMBER = "51944253190"; // Reemplazar con el número real de WhatsApp del restaurante
+const RESTAURANTE_CONCEPT = "Restaurante peruano de carta amplia, con enfoque criollo-marino, platos de fondo, bar, vinos, bebidas y delivery.";
+const WHATSAPP_NUMBER = "51965383485"; // Celular/WhatsApp que inicia con 9
+const PHONE_NUMBER = "012632386"; // Teléfono fijo de llamadas que inicia con 01
+const ATTENTION_HOURS = "Lunes a domingo de 8:00 am a 11:00 pm";
+const DELIVERY_HOURS = "11:00 am a 10:00 pm";
+const CORKAGE_FEE = "Derecho de Corcho: S/. 3.00 por persona";
 const FACEBOOK_URL = "";
 const MAPS_URL = "https://maps.app.goo.gl/zq5rjzeKNGH7nvGeA";
-const MARQUEE_TEXT = "✨ ¡BIENVENIDOS A NUESTRO MENÚ DIGITAL! • REALIZA TU PEDIDO POR WHATSAPP DE FORMA FÁCIL Y RÁPIDA • ";
+const MARQUEE_TEXT = "✨ ¡BIENVENIDOS A EL BARQUERO RESTAURANT! • PEDIDOS WHATSAPP: 965 383 485 • LLAMADAS DELIVERY: (01) 263 2386 • DE 11:00 AM A 10:00 PM • ";
 // ==========================================
 
 interface Dish {
@@ -61,6 +66,30 @@ export default function App() {
     estrellasMozo: 0,
     estrellasComida: 0,
     comentario: ''
+  });
+
+  // States for Checkout Form
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [loadingGPS, setLoadingGPS] = useState(false);
+  const [gpsSuccess, setGpsSuccess] = useState<boolean | null>(null);
+  const [copiedYape, setCopiedYape] = useState(false);
+  const [checkoutData, setCheckoutData] = useState({
+    tipoEntrega: 'delivery', // 'delivery' | 'pickup'
+    nombre: '',
+    telefono: '',
+    // Delivery fields:
+    direccion: '',
+    distrito: '',
+    referencia: '',
+    latitud: null as number | null,
+    longitud: null as number | null,
+    // Pickup fields:
+    horaRetiro: '',
+    // Payment fields:
+    medioPago: 'yape', // 'yape' | 'tarjeta' | 'efectivo'
+    efectivoVuelto: '', // if paying with cash
+    // Extra notes:
+    notas: ''
   });
 
   useEffect(() => {
@@ -159,12 +188,90 @@ export default function App() {
   const sendToWhatsApp = () => {
     const total = calculateTotal();
     let message = `*Hola ${RESTAURANTE_NAME}, deseo realizar un pedido:*\n\n`;
+    
+    // Delivery or Pickup header
+    if (checkoutData.tipoEntrega === 'delivery') {
+      message += `*🛵 DETALLES DE ENTREGA (DELIVERY)*\n`;
+      message += `• *Nombre:* ${checkoutData.nombre}\n`;
+      message += `• *Teléfono:* ${checkoutData.telefono}\n`;
+      message += `• *Dirección:* ${checkoutData.direccion}\n`;
+      message += `• *Distrito:* ${checkoutData.distrito}\n`;
+      message += `• *Referencia:* ${checkoutData.referencia || 'No indicada'}\n`;
+      if (checkoutData.latitud && checkoutData.longitud) {
+        message += `• *📍 Ubicación GPS:* https://www.google.com/maps?q=${checkoutData.latitud},${checkoutData.longitud}\n`;
+      } else {
+        message += `• *📍 Ubicación GPS:* No compartida\n`;
+      }
+    } else {
+      message += `*🏪 DETALLES DE RECOJO (RETIRO EN LOCAL)*\n`;
+      message += `• *Nombre:* ${checkoutData.nombre}\n`;
+      message += `• *Teléfono:* ${checkoutData.telefono}\n`;
+      message += `• *Hora aproximada:* ${checkoutData.horaRetiro || 'No indicada'}\n`;
+    }
+    
+    message += `\n*🛍️ DETALLE DE PRODUCTOS:*\n`;
     cart.forEach(item => {
       message += `• ${item.cantidad} x ${item.nombre} (${item.precio})\n`;
     });
-    message += `\n*TOTAL: S/.${total.toFixed(2)}*`;
+    
+    message += `\n*💳 MEDIO DE PAGO:*\n`;
+    if (checkoutData.medioPago === 'yape') {
+      message += `• Yape / Plin 📱\n`;
+    } else if (checkoutData.medioPago === 'tarjeta') {
+      message += `• Tarjeta de Crédito/Débito (Llevar POS) 💳\n`;
+    } else {
+      const vueltoStr = checkoutData.efectivoVuelto.trim();
+      if (vueltoStr) {
+        const pagaraCon = parseFloat(vueltoStr) || 0;
+        const vuelto = pagaraCon - total;
+        message += `• Efectivo (Paga con: S/.${pagaraCon.toFixed(2)}${vuelto > 0 ? ` | Vuelto: S/.${vuelto.toFixed(2)}` : ''}) 💵\n`;
+      } else {
+        message += `• Efectivo (Monto exacto) 💵\n`;
+      }
+    }
+    
+    if (checkoutData.notas.trim()) {
+      message += `\n*📝 NOTAS:* ${checkoutData.notas}\n`;
+    }
+    
+    message += `\n*💰 TOTAL A PAGAR: S/.${total.toFixed(2)}*`;
+    
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+  };
+
+  const getGeolocation = () => {
+    if (!navigator.geolocation) {
+      alert("La geolocalización no es compatible con este navegador.");
+      return;
+    }
+    setLoadingGPS(true);
+    setGpsSuccess(null);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCheckoutData(prev => ({
+          ...prev,
+          latitud: position.coords.latitude,
+          longitud: position.coords.longitude
+        }));
+        setLoadingGPS(false);
+        setGpsSuccess(true);
+      },
+      (error) => {
+        console.error("Error al obtener geolocalización:", error);
+        setLoadingGPS(false);
+        setGpsSuccess(false);
+        alert("No se pudo obtener la ubicación. Por favor, asegúrate de activar el GPS y dar permisos al navegador.");
+      },
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
+  };
+
+  const handleCopyYape = () => {
+    const cleanNumber = WHATSAPP_NUMBER.startsWith("51") ? WHATSAPP_NUMBER.slice(2) : WHATSAPP_NUMBER;
+    navigator.clipboard.writeText(cleanNumber);
+    setCopiedYape(true);
+    setTimeout(() => setCopiedYape(false), 2000);
   };
 
   const scrollToCategory = (catId: string) => {
@@ -244,6 +351,16 @@ export default function App() {
           <img src="/header.png" alt="El Barquero Logo" className="h-16 w-auto object-contain" />
         </div>
         <div className="flex items-center gap-2">
+          {PHONE_NUMBER && (
+            <motion.a
+              href={`tel:${PHONE_NUMBER}`}
+              whileTap={{ scale: 0.95 }}
+              className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+              title="Llamar por teléfono"
+            >
+              <Phone size={18} />
+            </motion.a>
+          )}
           {WHATSAPP_NUMBER && (
             <motion.a
               href={`https://wa.me/${WHATSAPP_NUMBER}`}
@@ -251,6 +368,7 @@ export default function App() {
               rel="noopener noreferrer"
               whileTap={{ scale: 0.95 }}
               className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+              title="Enviar WhatsApp"
             >
               <svg className="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.806-9.794.002-2.617-1.015-5.078-2.862-6.93C16.37 2.03 13.917.994 12.006.994 6.605.994 2.207 5.39 2.204 10.79c-.001 1.511.411 2.984 1.192 4.275L2.39 20.6l5.72-1.498c-1.12.72-1.12.72-.463.052z" />
@@ -296,6 +414,50 @@ export default function App() {
       <div className="px-5 pt-4 pb-1">
         <div className="relative w-full rounded-3xl overflow-hidden shadow-xl aspect-[1.6/1]">
           <img src="/banner.jpg" alt="El Barquero Banner" className="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      {/* RESTAURANT INFO CARD */}
+      <div className="px-5 pt-4">
+        <div className="bg-[#14161e] border border-gray-900/60 rounded-3xl p-5 shadow-lg flex flex-col gap-3 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+          <div>
+            <h1 className="font-title text-[20px] text-primary font-bold leading-tight">{RESTAURANTE_NAME}</h1>
+            <p className="text-[11px] text-gray-400 mt-1.5 leading-relaxed">{RESTAURANTE_CONCEPT}</p>
+          </div>
+          
+          <div className="h-px bg-gray-800/40 my-1"></div>
+          
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-[10px]">
+            <div className="flex items-start gap-2">
+              <Clock size={13} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-gray-300">Atención General</p>
+                <p className="text-gray-400 mt-0.5">{ATTENTION_HOURS}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <Clock size={13} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-gray-300">Horario Delivery</p>
+                <p className="text-gray-400 mt-0.5">{DELIVERY_HOURS}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <Phone size={13} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-gray-300">Teléfono Delivery</p>
+                <a href={`tel:${PHONE_NUMBER}`} className="text-sky-400 hover:underline mt-0.5 block font-bold">(01) 263 2386</a>
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <Wine size={13} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-gray-300">Derecho de Corcho</p>
+                <p className="text-gray-400 mt-0.5">{CORKAGE_FEE}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -542,12 +704,347 @@ export default function App() {
                 </div>
               </div>
               <button
-                onClick={sendToWhatsApp}
-                className="w-full bg-[#25D366] text-white py-4 rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-green-900/30 hover:scale-[1.02] transition-transform font-bold"
+                onClick={() => {
+                  setShowSummary(false);
+                  setShowCheckout(true);
+                }}
+                className="w-full bg-[#25D366] text-white py-4 rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-green-900/30 hover:scale-[1.02] transition-transform font-bold cursor-pointer"
               >
                 Enviar Pedido a WhatsApp
                 <ChevronRight size={20} />
               </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FORMULARIO DE CHECKOUT / DETALLES DE ENVÍO */}
+      <AnimatePresence>
+        {showCheckout && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-[#14161e] w-full max-w-sm rounded-[2rem] p-6 shadow-2xl relative max-h-[95vh] overflow-y-auto border border-gray-800"
+            >
+              <button
+                onClick={() => setShowCheckout(false)}
+                className="absolute top-4 right-4 w-8 h-8 bg-[#1d202b] rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors z-10 cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+
+              <div className="flex flex-col items-center text-center mb-5 mt-2">
+                <div className="w-12 h-12 bg-sky-950/40 rounded-full flex items-center justify-center mb-3">
+                  <ShoppingBag size={24} className="text-primary" />
+                </div>
+                <h2 className="font-title text-2xl text-white leading-none mb-2">Completar Pedido</h2>
+                <p className="text-xs text-gray-400">Ingresa los detalles para el envío de tu pedido.</p>
+              </div>
+
+              {/* Delivery / Pickup Tab Selector */}
+              <div className="flex bg-[#1d202b] p-1.5 rounded-2xl border border-gray-800/85 mb-4">
+                <button
+                  type="button"
+                  onClick={() => setCheckoutData(prev => ({ ...prev, tipoEntrega: 'delivery' }))}
+                  className={`flex-1 py-2 text-center text-xs font-bold rounded-xl transition-all duration-200 uppercase tracking-wide flex items-center justify-center gap-1.5 cursor-pointer
+                    ${checkoutData.tipoEntrega === 'delivery'
+                      ? 'bg-primary text-black'
+                      : 'text-gray-400 hover:text-white'
+                    }`}
+                >
+                  <MapPin size={14} />
+                  Delivery
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCheckoutData(prev => ({ ...prev, tipoEntrega: 'pickup' }))}
+                  className={`flex-1 py-2 text-center text-xs font-bold rounded-xl transition-all duration-200 uppercase tracking-wide flex items-center justify-center gap-1.5 cursor-pointer
+                    ${checkoutData.tipoEntrega === 'pickup'
+                      ? 'bg-primary text-black'
+                      : 'text-gray-400 hover:text-white'
+                    }`}
+                >
+                  <Clock size={14} />
+                  Retiro
+                </button>
+              </div>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  sendToWhatsApp();
+                }}
+                className="space-y-3"
+              >
+                {/* Personal Info */}
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Nombre Completo *</label>
+                  <input
+                    required
+                    type="text"
+                    value={checkoutData.nombre}
+                    onChange={e => setCheckoutData(prev => ({ ...prev, nombre: e.target.value }))}
+                    className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
+                    placeholder="Ej. Juan Pérez"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Teléfono / WhatsApp *</label>
+                  <input
+                    required
+                    type="tel"
+                    minLength={9}
+                    maxLength={9}
+                    pattern="[0-9]*"
+                    value={checkoutData.telefono}
+                    onChange={e => {
+                      const val = e.target.value.replace(/\D/g, '').slice(0, 9);
+                      setCheckoutData(prev => ({ ...prev, telefono: val }));
+                    }}
+                    className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
+                    placeholder="Ej. 987654321"
+                  />
+                </div>
+
+                {/* Delivery Fields */}
+                {checkoutData.tipoEntrega === 'delivery' && (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Distrito *</label>
+                        <input
+                          required
+                          type="text"
+                          value={checkoutData.distrito}
+                          onChange={e => setCheckoutData(prev => ({ ...prev, distrito: e.target.value }))}
+                          className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
+                          placeholder="Ej. San Miguel"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Dirección *</label>
+                        <input
+                          required
+                          type="text"
+                          value={checkoutData.direccion}
+                          onChange={e => setCheckoutData(prev => ({ ...prev, direccion: e.target.value }))}
+                          className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
+                          placeholder="Ej. Av. Marina 123"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Referencia</label>
+                      <input
+                        type="text"
+                        value={checkoutData.referencia}
+                        onChange={e => setCheckoutData(prev => ({ ...prev, referencia: e.target.value }))}
+                        className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
+                        placeholder="Ej. Frente al parque principal"
+                      />
+                    </div>
+
+                    {/* Gegeolocation GPS button */}
+                    <div className="pt-1">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase ml-1 block mb-1">
+                        Ubicación GPS *
+                      </label>
+                      <button
+                        type="button"
+                        onClick={getGeolocation}
+                        className={`w-full py-2.5 px-4 rounded-xl font-semibold text-xs transition-all duration-200 flex items-center justify-center gap-2 border cursor-pointer
+                          ${gpsSuccess === true
+                            ? 'bg-green-500/10 text-green-400 border-green-500/30'
+                            : gpsSuccess === false
+                            ? 'bg-red-500/10 text-red-400 border-red-500/30'
+                            : 'bg-primary/10 text-primary border-primary/20 hover:bg-primary/20'
+                          }`}
+                      >
+                        {loadingGPS ? (
+                          <>
+                            <Loader2 size={15} className="animate-spin text-primary" />
+                            <span>Obteniendo ubicación...</span>
+                          </>
+                        ) : gpsSuccess === true ? (
+                          <>
+                            <Check size={15} className="text-green-400" />
+                            <span>Ubicación GPS Guardada ✓</span>
+                          </>
+                        ) : (
+                          <>
+                            <Navigation size={15} className="rotate-45" />
+                            <span>📍 Obtener Mi Ubicación Actual</span>
+                          </>
+                        )}
+                      </button>
+                      <p className="text-[9px] text-gray-500 mt-1 ml-1 leading-normal">
+                        Para asegurar que el motorizado llegue más rápido y sin problemas.
+                      </p>
+                    </div>
+                  </>
+                )}
+
+                {/* Pickup Fields */}
+                {checkoutData.tipoEntrega === 'pickup' && (
+                  <div>
+                    <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Hora aproximada de Retiro *</label>
+                    <input
+                      required
+                      type="time"
+                      value={checkoutData.horaRetiro}
+                      onChange={e => setCheckoutData(prev => ({ ...prev, horaRetiro: e.target.value }))}
+                      className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors text-gray-300"
+                    />
+                  </div>
+                )}
+
+                {/* Payment Method Section */}
+                <div className="pt-2">
+                  <label className="text-[10px] font-bold text-gray-400 uppercase ml-1 block mb-1.5">Método de Pago *</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutData(prev => ({ ...prev, medioPago: 'yape' }))}
+                      className={`py-2.5 rounded-xl text-center text-xs font-semibold border transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer
+                        ${checkoutData.medioPago === 'yape'
+                          ? 'bg-primary/20 text-primary border-primary'
+                          : 'bg-[#1d202b] text-gray-400 border-gray-800 hover:text-white'
+                        }`}
+                    >
+                      <Smartphone size={16} />
+                      <span>Yape / Plin</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutData(prev => ({ ...prev, medioPago: 'tarjeta' }))}
+                      className={`py-2.5 rounded-xl text-center text-xs font-semibold border transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer
+                        ${checkoutData.medioPago === 'tarjeta'
+                          ? 'bg-primary/20 text-primary border-primary'
+                          : 'bg-[#1d202b] text-gray-400 border-gray-800 hover:text-white'
+                        }`}
+                    >
+                      <CreditCard size={16} />
+                      <span>Tarjeta</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutData(prev => ({ ...prev, medioPago: 'efectivo' }))}
+                      className={`py-2.5 rounded-xl text-center text-xs font-semibold border transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer
+                        ${checkoutData.medioPago === 'efectivo'
+                          ? 'bg-primary/20 text-primary border-primary'
+                          : 'bg-[#1d202b] text-gray-400 border-gray-800 hover:text-white'
+                        }`}
+                    >
+                      <Coins size={16} />
+                      <span>Efectivo</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Conditional Cash Change Question */}
+                {checkoutData.medioPago === 'efectivo' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pt-2">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">¿Con cuánto vas a pagar? (Vuelto exacto si vacío)</label>
+                      <div className="relative mt-1">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-bold">S/.</span>
+                        <input
+                          type="text"
+                          pattern="[0-9]*\.?[0-9]*"
+                          value={checkoutData.efectivoVuelto}
+                          onChange={e => {
+                            const val = e.target.value.replace(/[^0-9.]/g, '');
+                            setCheckoutData(prev => ({ ...prev, efectivoVuelto: val }));
+                          }}
+                          className="w-full bg-[#1d202b] border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
+                          placeholder="Ej. 100.00"
+                        />
+                      </div>
+                      {checkoutData.efectivoVuelto && (parseFloat(checkoutData.efectivoVuelto) > calculateTotal()) && (
+                        <p className="text-[10px] text-green-400 mt-1 ml-1 font-semibold">
+                          Vuelto aproximado: S/.{(parseFloat(checkoutData.efectivoVuelto) - calculateTotal()).toFixed(2)}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Conditional Yape Copy Card */}
+                {checkoutData.medioPago === 'yape' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pt-2">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Pagar con Yape / Plin</label>
+                      <div className="bg-[#1d202b] border border-gray-800 rounded-xl p-3.5 mt-1 flex justify-between items-center">
+                        <div>
+                          <p className="text-[10px] text-gray-400 font-semibold">Número de Yape:</p>
+                          <p className="text-sm font-bold text-white tracking-wider mt-0.5">
+                            {WHATSAPP_NUMBER.startsWith("51") ? WHATSAPP_NUMBER.slice(2).replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3') : WHATSAPP_NUMBER}
+                          </p>
+                          <p className="text-[9px] text-gray-500 mt-0.5">Titular: El Barquero Restaurant</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleCopyYape}
+                          className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 cursor-pointer border
+                            ${copiedYape
+                              ? 'bg-green-500/10 text-green-400 border-green-500/20'
+                              : 'bg-primary/10 text-primary border-primary/20 hover:bg-primary/20'
+                            }`}
+                        >
+                          {copiedYape ? '¡Copiado! ✓' : 'Copiar'}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Additional Notes */}
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Notas / Indicaciones del pedido</label>
+                  <textarea
+                    rows={2}
+                    value={checkoutData.notas}
+                    onChange={e => setCheckoutData(prev => ({ ...prev, notas: e.target.value }))}
+                    className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors resize-none mt-1"
+                    placeholder="Ej. Traer cubiertos, salsa tártara..."
+                  />
+                </div>
+
+                {/* Submit / Send Button */}
+                <div className="pt-2 border-t border-dashed border-gray-800 mt-4">
+                  <div className="flex justify-between items-center mb-3 px-1 text-xs">
+                    <span className="text-gray-400 font-semibold">Total a pagar:</span>
+                    <span className="text-primary font-bold text-sm">S/.{calculateTotal().toFixed(2)}</span>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#25D366] text-white py-3.5 rounded-xl flex items-center justify-center gap-2.5 shadow-xl shadow-green-900/20 hover:scale-[1.01] transition-all font-bold text-sm cursor-pointer"
+                  >
+                    <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.806-9.794.002-2.617-1.015-5.078-2.862-6.93C16.37 2.03 13.917.994 12.006.994 6.605.994 2.207 5.39 2.204 10.79c-.001 1.511.411 2.984 1.192 4.275L2.39 20.6l5.72-1.498c-1.12.72-1.12.72-.463.052z" />
+                    </svg>
+                    Enviar a WhatsApp
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         )}
@@ -595,8 +1092,8 @@ export default function App() {
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Teléfono</label>
-                    <input required type="tel" minLength={9} maxLength={11} pattern="[0-9]*" value={birthdayData.telefono} onChange={e => {
-                      const val = e.target.value.replace(/\D/g, '');
+                    <input required type="tel" minLength={9} maxLength={9} pattern="[0-9]*" value={birthdayData.telefono} onChange={e => {
+                      const val = e.target.value.replace(/\D/g, '').slice(0, 9);
                       setBirthdayData({...birthdayData, telefono: val});
                     }} className="w-full bg-[#1d202b] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors" placeholder="Ej. 987654321" />
                   </div>

@@ -13,135 +13,442 @@ export interface Category {
 
 export const DEFAULT_MENU_DATA: Category[] = [
   {
-    id: "sopas-entradas",
-    nombre: "Sopas y Entradas",
+    id: "bar",
+    nombre: "Bar",
     items: [
-      {
-        nombre: "Sopa Menestron",
-        descripcion: "Sopa tradicional y sustanciosa con carne, fideos y abundantes verduras frescas.",
-        precio: "S/. 29.90",
-        imagen: ""
-      }
+      { nombre: "Pisco Sour", precio: "S/. 18.90" },
+      { nombre: "Machu Picchu", precio: "S/. 21.90" },
+      { nombre: "Mojito", precio: "S/. 18.90" },
+      { nombre: "Coctel de Algarrobina", precio: "S/. 18.90" },
+      { nombre: "Piña Colada", precio: "S/. 18.90" },
+      { nombre: "Chilcano Clásico", precio: "S/. 18.90" },
+      { nombre: "Maracuyá Sour", precio: "S/. 18.90" },
+      { nombre: "Cuba Libre", precio: "S/. 18.90" },
+      { nombre: "Chilcano de Tuna", precio: "S/. 18.90" },
+      { nombre: "Margarita", precio: "S/. 21.90" },
+      { nombre: "Daiguiri Durazno", precio: "S/. 18.90" },
+      { nombre: "Sangría 1 Lt.", precio: "S/. 40.00" }
     ]
   },
   {
-    id: "pescados-mariscos",
-    nombre: "Pescados y Mariscos",
+    id: "vinos",
+    nombre: "Vinos",
     items: [
-      {
-        nombre: "Lenguado frito x 600 + Leche de tigre",
-        descripcion: "Exquisito lenguado de 600gr frito al punto dorado, acompañado con su clásica y refrescante leche de tigre.",
-        precio: "S/. 80.90",
-        imagen: ""
-      },
-      {
-        nombre: "Corvina Frita X 600 + leche de tigre",
-        descripcion: "Corvina seleccionada de 600gr frita a la perfección, servida con una deliciosa leche de tigre de cortesía.",
-        precio: "S/. 69.90",
-        imagen: ""
-      },
-      {
-        nombre: "Cabrilla Frita x 800gr + leche tigre",
-        descripcion: "Generosa cabrilla de 800gr frita crocante por fuera y jugosa por dentro, acompañada de una espectacular leche de tigre.",
-        precio: "S/. 79.90",
-        imagen: ""
-      }
+      { nombre: "Queirolo Magdalena", precio: "S/. 35.00" },
+      { nombre: "Queirolo Borgoña", precio: "S/. 35.00" },
+      { nombre: "Tabernero Gran Tinto", precio: "S/. 45.00" },
+      { nombre: "Tabernero Semi Seco Tinto", precio: "S/. 45.00" },
+      { nombre: "Tacama Gran Tinto", precio: "S/. 48.00" },
+      { nombre: "Tacama Semi Seco Tinto", precio: "S/. 40.00" },
+      { nombre: "Intipalka Reserva Tinto", precio: "S/. 65.00" },
+      { nombre: "Casillero del Diablo Tinto", precio: "S/. 70.00" },
+      { nombre: "Casillero del Diablo Blanco", precio: "S/. 70.00" },
+      { nombre: "Navarro Correa", precio: "S/. 85.00" },
+      { nombre: "Concha y Toro Reservado", precio: "S/. 35.00" },
+      { nombre: "Concha y Toro Frontera", precio: "S/. 48.00" },
+      { nombre: "Queirolo Blanco", precio: "S/. 35.00" },
+      { nombre: "Queirolo Semi Seco", precio: "S/. 35.00" },
+      { nombre: "Tabernero Gran Blanco", precio: "S/. 45.00" },
+      { nombre: "Tabernero Blanco Semi Seco", precio: "S/. 45.00" },
+      { nombre: "Tacama Gran Blanco", precio: "S/. 45.00" },
+      { nombre: "Tacama Semi Seco Blanco", precio: "S/. 48.00" },
+      { nombre: "Queirolo Rose", precio: "S/. 35.00" },
+      { nombre: "Tabernero Rose", precio: "S/. 40.00" },
+      { nombre: "Tacama Rose", precio: "S/. 45.00" }
     ]
   },
   {
-    id: "platos-fondo",
-    nombre: "Platos de Fondo",
+    id: "entradas-criollas",
+    nombre: "Entradas Criollas",
     items: [
-      {
-        nombre: "Arroz con Pato + Ceviche",
-        descripcion: "Tradicional arroz con pato a la chiclayana aromatizado con cilantro, acompañado de un fresco y picante ceviche de la casa.",
-        precio: "S/. 59.90",
-        imagen: ""
-      },
-      {
-        nombre: "Arroz con pato",
-        descripcion: "Sabroso arroz norteño sazonado con cilantro y especias, coronado con una tierna presa de pato.",
-        precio: "S/. 48.00",
-        imagen: ""
-      },
-      {
-        nombre: "Tallarines verdes a lo pobre",
-        descripcion: "Pasta con salsa cremosa de albahaca y espinaca, servida con huevo frito, plátano frito y papas doradas.",
-        precio: "S/. 39.90",
-        imagen: ""
-      },
-      {
-        nombre: "Tallarines verdes c/. Bisteck Apañado",
-        descripcion: "Clásicos tallarines verdes cremosos acompañados de un jugoso bisteck cubierto con un empanizado crocante.",
-        precio: "S/. 38.00",
-        imagen: ""
-      },
-      {
-        nombre: "Cuy Frito Entero",
-        descripcion: "Cuy entero seleccionado, frito a la perfección hasta quedar crocante (estilo chactado), servido con guarniciones tradicionales.",
-        precio: "S/. 75.00",
-        imagen: ""
-      },
-      {
-        nombre: "Milanesa de pollo c/. Papas fritas",
-        descripcion: "Filete de pechuga de pollo empanizado y frito, crujiente y dorado, acompañado de papas fritas y ensalada.",
-        precio: "S/. 35.00",
-        imagen: ""
-      },
-      {
-        nombre: "Chaufa a lo pobre",
-        descripcion: "Arroz chaufa al wok salteado con carnes, huevo y cebollita china, servido al estilo a lo pobre con plátano y huevo frito.",
-        precio: "S/. 36.00",
-        imagen: ""
-      }
+      { nombre: "Papa a la Huancaína", descripcion: "papa huairo, queso, aceituna, huevo y crema", precio: "S/. 19.00" },
+      { nombre: "Ocopa a la Arequipeña", descripcion: "papa huamantanga, camarones de camaná, aceitunas, queso, huevo y crema", precio: "S/. 19.00" },
+      { nombre: "Huevo a la Rusa", descripcion: "huevo, salsa golf, papas y legumbres", precio: "S/. 14.00" },
+      { nombre: "Palta Rellena con Pollo", descripcion: "palta, papas sancochadas, legumbres y pollo", precio: "S/. 19.00" },
+      { nombre: "Palta al Napoleón", descripcion: "palta, jamón inglés, champiñones, papas, pollo, wantan, papaya y salsa golf", precio: "S/. 20.00" },
+      { nombre: "Causa Rellena de Pollo", descripcion: "papa huamantanga, crema de ají amarillo y pollo", precio: "S/. 19.00" },
+      { nombre: "Ensalada al Barquero", descripcion: "lechuga, brócoli, jamón inglés, queso, palta, choclo y pollo", precio: "S/. 22.00" },
+      { nombre: "Choclo con queso y Ají de Huacatay", descripcion: "entero", precio: "S/. 12.00" },
+      { nombre: "Duo Mix", descripcion: "ocopa a la arequipeña y papa a la huancaína", precio: "S/. 25.00" },
+      { nombre: "Tequeños Rellenos c/Jamón y Queso (8 und)", descripcion: "8 unidades", precio: "S/. 15.00" },
+      { nombre: "Tequeños Rellenos c/Jamón y Queso (12 und)", descripcion: "12 unidades", precio: "S/. 22.00" }
     ]
   },
   {
-    id: "refrescos-frozen",
-    nombre: "Refrescos y Frozen",
+    id: "entradas-marinas",
+    nombre: "Entradas Marinas",
     items: [
-      {
-        nombre: "Refrescos de pura fruta (Chicha Morada, Aguaymanto, Limonada, Maracuyá, Mandarina)",
-        descripcion: "1 litro de refresco natural preparado con frutas selectas (Chicha Morada, Aguaymanto, Limonada, Maracuyá o Mandarina).",
-        precio: "S/. 19.90",
-        imagen: ""
-      },
-      {
-        nombre: "Refrescos de pura fruta (Tuna, Arándanos)",
-        descripcion: "1 litro de refresco natural exótico y refrescante (Tuna o Arándanos).",
-        precio: "S/. 22.00",
-        imagen: ""
-      },
-      {
-        nombre: "Frozen de Maracuyá 500 ml",
-        descripcion: "Bebida ultra refrescante licuada con hielo y pulpa concentrada de maracuyá.",
-        precio: "S/. 14.90",
-        imagen: ""
-      },
-      {
-        nombre: "Frozen Pura Fruta 2x",
-        descripcion: "Promoción 2x en deliciosos frozens frutados. Elige entre Maracuyá, Durazno, Tuna, Mango o Limón.",
-        precio: "S/. 19.90",
-        imagen: ""
-      }
+      { nombre: "Causa en Pulpa de Cangrejo", descripcion: "papa huamantanga, pulpa de cangrejo y crema de ají amarillo", precio: "S/. 28.00" },
+      { nombre: "Causa de Langostinos", descripcion: "papa huamantanga, langostinos, crema de ají amarillo y palta", precio: "S/. 28.00" },
+      { nombre: "Pulpo al Olivo", descripcion: "láminas de pulpo, galleta soda, palta, papas laminadas, crema de aceitunas de botija", precio: "S/. 35.00" },
+      { nombre: "Causa con Pulpo al Olivo", descripcion: "láminas de pulpo, salsa de aceitunas de botija, aceite de oliva, vodka, limón, galleta soda y papas laminadas", precio: "S/. 35.00" },
+      { nombre: "Causa Acebichada", descripcion: "papa huamantanga, palta, crema de ají amarillo, trozo de pescado, ají limo, yuyo", precio: "S/. 35.00" },
+      { nombre: "Causa al Barquero", descripcion: "pulpa de cangrejo, langostinos, uñas de cangrejo, palta y crema de ají amarillo", precio: "S/. 35.00" },
+      { nombre: "Conchitas a la Parmesana (6 und)", descripcion: "6 unidades", precio: "S/. 30.00" },
+      { nombre: "Conchitas a la parmesana Barquero", precio: "S/. 35.00" },
+      { nombre: "Choritos a la Chalaca (8 und)", descripcion: "8 unidades; choros de paracas, cebolla, choclo, limón, ají limo y aceite de oliva", precio: "S/. 25.00" },
+      { nombre: "1 Docena de Choritos a la Chalaca", descripcion: "1/2 docena de choros de paracas, cebolla, choclo, limón, ají limo y aceite de oliva", precio: "S/. 38.00" },
+      { nombre: "Palta Rellena con Langostinos", descripcion: "palta, papas brunoise, legumbres y salsa golf", precio: "S/. 22.00" },
+      { nombre: "Palta Rellena a la Victoria", descripcion: "palta, langostinos, papas brunoise, legumbres, salsa golf, huevo y melón", precio: "S/. 22.00" },
+      { nombre: "Tequeños Rellenos de Pulpa de Cangrejo", descripcion: "8 unidades", precio: "S/. 27.00" },
+      { nombre: "Tequeños Rellenos de Langostinos", descripcion: "8 unidades", precio: "S/. 27.00" }
     ]
   },
   {
-    id: "tragos-cocteles",
-    nombre: "Tragos y Cócteles",
+    id: "cocktails-marinos",
+    nombre: "Cocktails Marinos",
     items: [
-      {
-        nombre: "Happy Day 2x (Pisco Sour)",
-        descripcion: "Promoción 2x de nuestro tradicional cóctel bandera peruano con pisco, limón, jarabe de goma y clara de huevo.",
-        precio: "S/. 28.90",
-        imagen: ""
-      },
-      {
-        nombre: "Happy Day Cócteles 2x",
-        descripcion: "Promoción 2x. Elige y combina: Pisco Sour, Piña Colada, Mojito Clásico, Algarrobina, Daiquiri de Durazno, Chilcano de Maracuyá o Corona Margarita.",
-        precio: "S/. 28.90",
-        imagen: ""
-      }
+      { nombre: "Leche de Tigre", precio: "S/. 26.00" },
+      { nombre: "Leche de Pantera", precio: "S/. 29.00" },
+      { nombre: "Cocktail de Langostinos", precio: "S/. 26.00" },
+      { nombre: "Cocktail al Barquero", descripcion: "uñas de cangrejo, langostinos, conchas de abanico, conchas negras, yuyo crocante, fideo de arroz chino y chifles", precio: "S/. 29.00" },
+      { nombre: "Leche de tigre carretillero", descripcion: "leche de tigre, chicharrón de pescado, yuyo frito", precio: "S/. 35.00" },
+      { nombre: "Leche de pantera carretillero", descripcion: "leche de pantera, chicharrón de pescado, yuca y yuyo frito", precio: "S/. 38.00" }
+    ]
+  },
+  {
+    id: "cebiches",
+    nombre: "Cebiches",
+    items: [
+      { nombre: "Cebiche de Pescado", descripcion: "de la estación", precio: "S/. 42.00" },
+      { nombre: "Cebiche Mixto", descripcion: "mix mariscos, pescado", precio: "S/. 47.00" },
+      { nombre: "Cebiche de Pulpo", descripcion: "láminas de pulpo, camote", precio: "S/. 47.00" },
+      { nombre: "Cebiche de Conchas negras", precio: "S/. 48.90" },
+      { nombre: "Cebiche Clásico", descripcion: "cebiche de pescado + conchas negras", precio: "S/. 55.00" },
+      { nombre: "Cebiche de Mariscos", descripcion: "mix mariscos", precio: "S/. 55.90" },
+      { nombre: "Cebiche de pulpo con langostinos", precio: "S/. 48.00" },
+      { width: "Cebiche de pescado con langostinos", nombre: "Cebiche de pescado con langostinos", descripcion: "trozos de pescado y langostinos", precio: "S/. 48.00" }
+    ]
+  },
+  {
+    id: "cebiches-especiales",
+    nombre: "Cebiches Especiales",
+    items: [
+      { nombre: "Cebiche al Barquero", descripcion: "pescado, conchas de abanico, langostinos, uñas de cangrejo, camarón con garra, champiñones y espárragos", precio: "S/. 55.90" },
+      { nombre: "Cebiche Mar y Tierra", descripcion: "langostinos, champiñones, conchas negras y pescado", precio: "S/. 55.90" },
+      { nombre: "Cebiche de Pescado 4 Estaciones", precio: "S/. 58.90" },
+      { nombre: "Cebiche Mi Perú", precio: "S/. 58.90" },
+      { nombre: "Cebiche de Pescado a los 3 Ajíes", descripcion: "crema de ají amarillo, crema de rocoto y crema de apio", precio: "S/. 58.90" }
+    ]
+  },
+  {
+    id: "tiraditos",
+    nombre: "Tiraditos",
+    items: [
+      { nombre: "Tiradito 4 estaciones", precio: "S/. 58.00" },
+      { nombre: "Tiradito 3 estaciones", precio: "S/. 58.00" },
+      { nombre: "Tiradito 2 estaciones", precio: "S/. 45.00" },
+      { nombre: "Tiradito en Crema de Rocoto", precio: "S/. 42.00" },
+      { nombre: "Tiradito en Crema de Ají Amarillo", precio: "S/. 42.00" },
+      { nombre: "Tiradito al Natural", precio: "S/. 42.00" }
+    ]
+  },
+  {
+    id: "guarniciones",
+    nombre: "Guarniciones",
+    items: [
+      { nombre: "Porción de Yucas Fritas", precio: "S/. 9.00" },
+      { nombre: "Porción de Papas Fritas", precio: "S/. 9.00" },
+      { nombre: "Porción de Arroz", precio: "S/. 9.00" },
+      { nombre: "Porción de Camote", precio: "S/. 9.00" },
+      { nombre: "Porción de Chifle", precio: "S/. 9.00" },
+      { nombre: "Porción de Choclo", precio: "S/. 9.00" },
+      { nombre: "Porción de Cancha", precio: "S/. 9.00" },
+      { nombre: "Porción de Frijoles", precio: "S/. 9.00" }
+    ]
+  },
+  {
+    id: "sopas-cremas",
+    nombre: "Sopas y Cremas",
+    items: [
+      { nombre: "Sancochado de Res", precio: "S/. 29.90" },
+      { nombre: "Sopa Menestrón", precio: "S/. 29.90" },
+      { nombre: "Sopa a la Minuta", precio: "S/. 21.90" },
+      { nombre: "Sopa a la Criolla", precio: "S/. 21.90" },
+      { nombre: "Sustancia de Carne", precio: "S/. 21.90" },
+      { nombre: "Dieta de Pollo", precio: "S/. 21.90" },
+      { nombre: "Crema de Pollo al Montecarlo", precio: "S/. 28.00" }
+    ]
+  },
+  {
+    id: "sudados-parihuelas",
+    nombre: "Sudados y Parihuelas",
+    items: [
+      { nombre: "Sudado de Tramboyo", descripcion: "600 gr. entero", precio: "S/. 55.00" },
+      { nombre: "Sudado de Cabrilla", descripcion: "600 gr. entero", precio: "S/. 55.00" },
+      { nombre: "Sudado de Chita", descripcion: "600 gr. entero", precio: "S/. 79.90" },
+      { nombre: "Sudado de Lenguado", descripcion: "600 gr. entero", precio: "S/. 79.90" },
+      { nombre: "Sudado de Pescado", descripcion: "filete", precio: "S/. 38.00" },
+      { nombre: "Parihuela de Cabrilla", descripcion: "600 gr. entero; mix de mariscos, cangrejo popeye y cabrilla", precio: "S/. 75.90" },
+      { nombre: "Parihuela de Tramboyo", descripcion: "600 gr. entero; mix de mariscos, cangrejo popeye y tramboyo", precio: "S/. 75.90" },
+      { nombre: "Parihuela de Chita", descripcion: "600 gr. entero; mix de mariscos, cangrejo popeye y chita", precio: "S/. 95.90" },
+      { nombre: "Parihuela de Lenguado", descripcion: "600 gr. entero; mix de mariscos, cangrejo popeye y lenguado", precio: "S/. 95.90" },
+      { nombre: "Parihuela Mixta", descripcion: "mix de mariscos y filete de pescado, cangrejo popeye", precio: "S/. 75.90" }
+    ]
+  },
+  {
+    id: "chupes-concentrados",
+    nombre: "Chupes y Concentrados",
+    items: [
+      { nombre: "Chupe de Camarones", precio: "S/. 55.00" },
+      { nombre: "Chupe de Mariscos", precio: "S/. 49.00" },
+      { nombre: "Chupe de Langostinos", precio: "S/. 49.00" },
+      { nombre: "Chupe de Pescado", precio: "S/. 38.00" },
+      { nombre: "Chilcano de Pescado", precio: "S/. 20.90" },
+      { nombre: "Concentrado de Choros", precio: "S/. 20.90" }
+    ]
+  },
+  {
+    id: "jaleas-chicharrones",
+    nombre: "Jaleas y Chicharrones",
+    items: [
+      { nombre: "Jalea de Pescado", precio: "S/. 42.00" },
+      { nombre: "Jalea de Trucha", precio: "S/. 42.00" },
+      { nombre: "Jalea Mixta", precio: "S/. 47.00" },
+      { nombre: "Jalea de Trucha (Repetido)", descripcion: "El nombre aparece repetido en la carta original.", precio: "S/. 42.00" },
+      { nombre: "Chicharrón de Trucha", precio: "S/. 42.00" },
+      { nombre: "Chicharrón de Pescado", precio: "S/. 42.00" },
+      { nombre: "Chicharrón de Calamar", precio: "S/. 48.00" },
+      { nombre: "Chicharrón de Langostinos", precio: "S/. 48.00" },
+      { nombre: "Chicharrón Mixto", precio: "S/. 47.00" },
+      { nombre: "Chicharrón de Mariscos", precio: "S/. 48.00" }
+    ]
+  },
+  {
+    id: "arroces-picantes",
+    nombre: "Arroces y Picantes",
+    items: [
+      { nombre: "Arroz con Mariscos", precio: "S/. 47.00" },
+      { nombre: "Arroz con Langostinos", precio: "S/. 47.00" },
+      { nombre: "Arroz con Camarones", precio: "S/. 55.00" },
+      { nombre: "Arroz con Conchas Negras", precio: "S/. 55.00" },
+      { nombre: "Picante de Mariscos", precio: "S/. 42.00" },
+      { nombre: "Chaufa de Pescado", precio: "S/. 36.00" },
+      { nombre: "Chaufa de Langostinos", precio: "S/. 47.00" },
+      { nombre: "Chaufa de Mariscos", precio: "S/. 47.00" },
+      { nombre: "Chaufa de Mariscos al Barquero", descripcion: "gratinado; langostinos, calamar, pulpo, caracol, camarón con garra, conchas de abanico, champiñones, espárragos, queso mozzarella y queso parmesano", precio: "S/. 59.90" },
+      { nombre: "Arroz con Mariscos al Cardenal", descripcion: "gratinado; mix de mariscos, camarón con garra, conchas de abanico, almejas con caparazón, champiñones, queso mozzarella y queso parmesano", precio: "S/. 59.90" }
+    ]
+  },
+  {
+    id: "pescado-frito-entero",
+    nombre: "Pescado Frito Entero",
+    items: [
+      { nombre: "Chita Frita a lo Macho", descripcion: "600 gr.; mixtura de mariscos", precio: "S/. 95.90" },
+      { nombre: "Lenguado en salsa de mariscos", descripcion: "600 gr.; mixtura de mariscos", precio: "S/. 95.90" },
+      { nombre: "Lenguado al Ajo en Hojuelas", precio: "S/. 79.90" },
+      { nombre: "Chita Frita al Ajo en Hojuelas", descripcion: "600 gr.", precio: "S/. 79.90" },
+      { nombre: "Chita Frita", descripcion: "600 gr.", precio: "S/. 79.90" },
+      { nombre: "Lenguado Frito", descripcion: "600 gr.", precio: "S/. 79.90" },
+      { nombre: "Cabrilla Frita", descripcion: "600 gr.", precio: "S/. 48.00" },
+      { nombre: "Tramboyo Frito", descripcion: "600 gr.", precio: "S/. 48.00" },
+      { nombre: "Trucha Frita c/yucas Fritas", precio: "S/. 38.00" }
+    ]
+  },
+  {
+    id: "filetes-pescado-salsas",
+    nombre: "Filetes de Pescado en Salsas",
+    items: [
+      { nombre: "Filete de Pescado en Salsa de Mariscos", precio: "S/. 55.00" },
+      { nombre: "Filete de Pescado a lo Macho", precio: "S/. 55.00" },
+      { nombre: "Filete de Pescado en Salsa de Langostinos", precio: "S/. 55.00" },
+      { nombre: "Filete de Pescado en Salsa de Champiñones", precio: "S/. 38.00" },
+      { nombre: "Filete de Pescado en Salsa de Espárragos", precio: "S/. 38.00" },
+      { nombre: "Filete de Pescado a la Chorrillana", precio: "S/. 38.00" },
+      { nombre: "Filete de Pescado en Salsa de Tres Quesos", descripcion: "gratinado; filete de mero, salsa bechamel, queso andino, queso mozzarella, queso parmesano, aceitunas, pimiento morrones y papas torneadas al perejil", precio: "S/. 59.90" },
+      { nombre: "Filete de Pescado al Barquero", descripcion: "gratinado; filete de mero, mixtura de mariscos, champiñones, jamón inglés, queso andino, queso mozzarella, queso parmesano, salsa bechamel y espárragos", precio: "S/. 59.90" },
+      { nombre: "Milanesa de Pescado", descripcion: "papas amarillas fritas, arroz y ensalada", precio: "S/. 39.00" },
+      { nombre: "Milanesa de Trucha", descripcion: "papas fritas, arroz y ensalada", precio: "S/. 39.00" }
+    ]
+  },
+  {
+    id: "tortillas",
+    nombre: "Tortillas",
+    items: [
+      { nombre: "Tortilla de Pollo", descripcion: "trozos de pollo, verduras y arroz", precio: "S/. 30.00" },
+      { nombre: "Tortilla de Champiñones con Pollo", descripcion: "champiñones, trozos de pollo, verduras y arroz", precio: "S/. 30.00" },
+      { nombre: "Tortilla al Barquero", descripcion: "gratinado; colas de langostinos, camarones, palmitos, champiñones, queso andino, queso parmesano y jamón inglés", precio: "S/. 39.00" }
+    ]
+  },
+  {
+    id: "pastas",
+    nombre: "Pastas",
+    items: [
+      { nombre: "Fetuccini Huancaína con Lomo Fino Salteado", precio: "S/. 49.00" },
+      { nombre: "Fetuccini Huancaína con Lomo Salteado", descripcion: "bisteck", precio: "S/. 38.00" },
+      { nombre: "Fetuccini Huancaína con Bisteck Apanado", precio: "S/. 38.00" },
+      { nombre: "Fetuccini Huancaína con Milanesa de Pollo", precio: "S/. 38.00" },
+      { nombre: "Fetuccini Huancaína con Saltado de Pollo", precio: "S/. 37.00" },
+      { nombre: "Fetuccini en Salsa de Langostinos", precio: "S/. 48.00" },
+      { nombre: "Fetuccini al Alfredo", precio: "S/. 28.90" },
+      { nombre: "Fetuccini al Montecarlos", descripcion: "pollo, jamón y champiñones", precio: "S/. 36.00" },
+      { nombre: "Fetuccini al Pesto con Bisteck Apanado", precio: "S/. 38.00" },
+      { nombre: "Fetuccini al Pesto con Milanesa de Pollo", precio: "S/. 38.00" },
+      { nombre: "Fetuccini al Pesto con Pechuga a la Plancha", precio: "S/. 35.00" },
+      { nombre: "Fetuccini al Barquero", descripcion: "pollo, jamón, champiñones, palmitos, espárragos, queso mozzarella y queso parmesano; gratinado", precio: "S/. 59.90" },
+      { nombre: "Tallarines Verdes con Bisteck a la Plancha", precio: "S/. 32.00" },
+      { nombre: "Tallarines Verdes con Milanesa de Pescado", precio: "S/. 38.00" },
+      { nombre: "Tallarines Verdes con Churrasco a lo Pobre", descripcion: "tallarines al pesto, churrasco, huevo frito, plátano frito", precio: "S/. 38.90" }
+    ]
+  },
+  {
+    id: "tacu-tacu",
+    nombre: "Tacu Tacu con Pescados, Mariscos, Pollo y Carne",
+    items: [
+      { width: "Tacu Tacu con Filete de Pescado", nombre: "Tacu Tacu con Filete de Pescado", precio: "S/. 38.00" },
+      { nombre: "Tacu tacu c/cabrilla frita", descripcion: "600 gr. + leche de tigre", precio: "S/. 58.90" },
+      { nombre: "Tacu Tacu en Salsa de Mariscos", precio: "S/. 55.00" },
+      { nombre: "Tacu Tacu en Salsa de Langostinos", precio: "S/. 55.00" },
+      { nombre: "Tacu Tacu con Lomo Fino al Jugo", precio: "S/. 48.00" },
+      { nombre: "Tacu Tacu con Bisteck / Churrasco / Pechuga", precio: "S/. 35.00" },
+      { nombre: "Tacu Tacu con Seco de Pato", precio: "S/. 45.00" },
+      { nombre: "Tacu Tacu con Pechuga de Pollo Pobre", precio: "S/. 40.00" },
+      { nombre: "Tacu Tacu con Bisteck Apanado", precio: "S/. 38.00" },
+      { nombre: "Tacu tacu con Lomo Saltado", descripcion: "bisteck", precio: "S/. 38.00" },
+      { nombre: "Tacu Tacu a lo Pobre", descripcion: "bisteck, huevo frito, plátano frito", precio: "S/. 40.00" },
+      { nombre: "Tacu Tacu al Barquero", descripcion: "gratinado; camarones con garra, langostinos jumbo, conchas de abanico, queso mozzarella, queso parmesano y champiñones", precio: "S/. 59.90" }
+    ]
+  },
+  {
+    id: "combinados-marinos",
+    nombre: "Combinados Marinos",
+    items: [
+      { nombre: "Cebiche de Pescado + Chicharrón de Pescado", precio: "S/. 58.90" },
+      { nombre: "Cebiche de Pescado + Arroz con Mariscos", precio: "S/. 58.90" },
+      { nombre: "Cebiche de Pescado + Chicharrón Mixto", precio: "S/. 58.90" },
+      { nombre: "Cebiche Mixto + Chicharrón Mixto", precio: "S/. 58.90" },
+      { nombre: "Cebiche Mixto + Arroz con Mariscos", precio: "S/. 58.90" },
+      { nombre: "Cebiche de Pescado + Chicharrón de Calamar", precio: "S/. 58.90" },
+      { nombre: "Cebiche de Conchas Negras + Arroz con Mariscos", precio: "S/. 58.90" }
+    ]
+  },
+  {
+    id: "trio-marino",
+    nombre: "Trío Marino",
+    items: [
+      { nombre: "Trío Marino 1", descripcion: "Cebiche de Pescado + Arroz con Mariscos + Jalea de Pescado + Inca Kola 1.5 L", precio: "S/. 99.90" },
+      { nombre: "Trío Marino 2", descripcion: "Cebiche de Pescado + Jalea Mixta + Chaufa de Pescado + Inca Kola 1.5 L", precio: "S/. 99.90" },
+      { nombre: "Trío Marino 3", descripcion: "Cebiche de Mixto + Jalea de Pescado + Causa de Langostinos + Inca Kola 1.5 L", precio: "S/. 99.90" },
+      { nombre: "Trío Marino 4", descripcion: "Cebiche de Pescado + Papa a la Huancaína + Arroz con Pato + Inca Kola 1.5 L", precio: "S/. 99.90" }
+    ]
+  },
+  {
+    id: "platos-fondo-carne",
+    nombre: "Platos de Fondo con Carne",
+    items: [
+      { nombre: "Lomo Saltado", descripcion: "250 gr de lomo fino", precio: "S/. 48.00" },
+      { nombre: "Lomo Saltado a lo Pobre", descripcion: "250 gr. de lomo fino, huevo frito y plátano frito", precio: "S/. 55.00" },
+      { nombre: "Costillar Dorado de Res a la Arequipeña", descripcion: "papas doradas y listones de queso", precio: "S/. 42.00" },
+      { nombre: "Bisteck a lo Pobre", descripcion: "bisteck de tapa, huevo frito, plátano frito, arroz y ensalada mixta", precio: "S/. 38.00" },
+      { nombre: "Bisteck ó Churrasco a la Plancha", descripcion: "papas fritas, arroz y ensalada", precio: "S/. 35.00" },
+      { nombre: "Churrasco a lo Pobre con Spaguetti al pesto", descripcion: "churrasco, plátano frito, huevo frito y spaguetti al pesto", precio: "S/. 39.00" },
+      { nombre: "Bisteck Apanado a lo Pobre", descripcion: "papas fritas, huevo frito, plátano frito, arroz y ensalada", precio: "S/. 40.00" },
+      { nombre: "Churrasco a lo Pobre", descripcion: "papas fritas, huevo frito, plátano frito y arroz", precio: "S/. 38.00" },
+      { nombre: "Bisteck Apanado", descripcion: "papas fritas, arroz y ensalada", precio: "S/. 38.00" },
+      { nombre: "Chaufa de carne a lo pobre", descripcion: "trozos de carne, plátano frito y huevo frito", precio: "S/. 36.00" },
+      { nombre: "Lomo Saltado (Bisteck)", descripcion: "bisteck", precio: "S/. 35.00" },
+      { nombre: "Lomo Saltado Pobre (Bisteck)", descripcion: "bisteck", precio: "S/. 40.00" },
+      { nombre: "Tallarín Saltado de Carne", precio: "S/. 28.00" },
+      { nombre: "Arroz Chaufa Carne", precio: "S/. 28.00" },
+      { nombre: "Tallarines Verdes con Churrasco ó Bisteck a la Plancha", precio: "S/. 35.00" },
+      { nombre: "Tallarín Verde con Bisteck Apanado", precio: "S/. 38.00" }
+    ]
+  },
+  {
+    id: "platos-fondo-ave",
+    nombre: "Platos de Fondo con Ave",
+    items: [
+      { nombre: "Arroz con Pato y su papa a la Huancaína", precio: "S/. 48.00" },
+      { nombre: "Seco de Pato a la Norteña con Fréjoles", precio: "S/. 48.00" },
+      { nombre: "Saltado de Pollo", descripcion: "lomito de pollo", precio: "S/. 35.00" },
+      { nombre: "Pechuga de Pollo", descripcion: "papas fritas, arroz y ensalada mixta con palta", precio: "S/. 35.00" },
+      { nombre: "Milanesa de Pollo", descripcion: "papas fritas y ensalada mixta con palta", precio: "S/. 40.00" },
+      { nombre: "Pechuga de Pollo a lo Pobre", descripcion: "papas fritas, huevo, plátano frito, arroz y ensalada", precio: "S/. 40.00" },
+      { nombre: "Chicharrón de Pollo", descripcion: "papas fritas y ensalada mixta con palta", precio: "S/. 36.00" },
+      { nombre: "Chaufa de Pollo a lo pobre", descripcion: "trozos de pollo, plátano frito y huevo frito", precio: "S/. 36.00" },
+      { nombre: "Tallarín Saltado de Pollo", descripcion: "lomito de pollo", precio: "S/. 28.00" },
+      { nombre: "Tallarín Verde con Pechuga de Pollo", precio: "S/. 35.00" },
+      { nombre: "Arroz Chaufa de Pollo", precio: "S/. 28.00" },
+      { nombre: "Suprema de Pollo al Barquero", descripcion: "gratinado; filete de pollo, jamón inglés, queso andino, salsa bechamel, queso mozzarella, queso parmesano, pimiento morrón, papas torneadas y flambeadas al perejil", precio: "S/. 48.00" },
+      { nombre: "Milanesa de Pollo al Barquero", descripcion: "fideo cabello de ángel, pecanas, castañas, orégano, almendras, galleta molida, papas fritas, arroz y ensalada", precio: "S/. 45.00" }
+    ]
+  },
+  {
+    id: "platos-internacionales",
+    nombre: "Platos Internacionales",
+    items: [
+      { nombre: "Medallones de Lomo Fino en Salsa de Champiñones", precio: "S/. 59.90" },
+      { nombre: "Filet Mignon", descripcion: "lomo fino; medallones de lomo fino, salsa madera, champiñones, legumbres flambeadas y vino blanco", precio: "S/. 59.90" },
+      { nombre: "Medallones de Lomo a las 3 Pimientas", descripcion: "gratinado; lomo fino, 3 pimientas, salsa bechamel, queso mozzarella, queso parmesano, papas torneadas flambeadas al perejil", precio: "S/. 59.90" },
+      { nombre: "Medallones de Lomo Fino a los 4 Quesos", descripcion: "gratinado; queso andino, queso mozzarella, queso parmesano, queso Edam Laive, salsa bechamel, papas torneadas y flambeadas al perejil", precio: "S/. 59.90" },
+      { nombre: "Cordon Blue de Lomo Fino", descripcion: "gratinado; 350 gr. de bife de lomo fino, jamón inglés, queso parmesano, queso mozzarella, queso andino, papa torneada y flambeadas al perejil", precio: "S/. 59.90" },
+      { nombre: "Rissoto de Champiñones con Lomo Saltado", descripcion: "gratinado; arroz a la española, crema de leche, champiñones, lomo fino, cebolla, tomate, ají amarillo, queso Edam Laive, queso mozzarella y queso parmesano", precio: "S/. 59.90" },
+      { nombre: "Arroz con Mariscos al Cardenal", descripcion: "gratinado; mix de mariscos, camarón con garra, conchas de abanico, almejas con caparazón, champiñones, queso mozzarella y queso parmesano", precio: "S/. 59.90" }
+    ]
+  },
+  {
+    id: "platos-tipicos-barquero",
+    nombre: "Platos Típicos - Barquero",
+    items: [
+      { nombre: "Cuy Frito", descripcion: "entero; con papas doradas, choclo entero, sarsa criolla y su salsa de ocopa", precio: "S/. 75.00" },
+      { nombre: "Chupe de Camarones", precio: "S/. 55.00" },
+      { nombre: "Chicharrón de Trucha c/ Yucas Fritas", precio: "S/. 42.00" },
+      { nombre: "Arroz con pato y su Salsa Huancaina", precio: "S/. 48.00" },
+      { nombre: "Seco de Pato con Frejoles", precio: "S/. 48.00" },
+      { nombre: "Costillar Dorado con papas doradas", precio: "S/. 45.00" },
+      { nombre: "Trucha Frita con Yucas Fritas y Arroz", precio: "S/. 37.00" },
+      { nombre: "Medio Cuy Frito", precio: "S/. 40.00" },
+      { nombre: "Sancochado de Res (Sopa)", descripcion: "sopa", precio: "S/. 29.90" },
+      { nombre: "Menestrón (Sopa)", descripcion: "sopa", precio: "S/. 29.90" }
+    ]
+  },
+  {
+    id: "bebidas-frias",
+    nombre: "Bebidas Frías",
+    items: [
+      { nombre: "Coca Cola, Inka Kola, Inka Kola Zero (1.5L)", descripcion: "1 1/2 descartables", precio: "S/. 16.90" },
+      { nombre: "Coca Cola, Inka Kola, Inka Kola Zero (500ml)", descripcion: "500 ml", precio: "S/. 7.90" },
+      { nombre: "Sprite, Fanta", descripcion: "500 ml / 600 ml", precio: "S/. 7.90" },
+      { nombre: "San Luis c/Gas o s/gas", precio: "S/. 6.50" },
+      { nombre: "San Mateo c/Gas o s/gas", precio: "S/. 6.50" }
+    ]
+  },
+  {
+    id: "refrescos-pura-fruta",
+    nombre: "Refrescos de Pura Fruta",
+    items: [
+      { nombre: "Refresco 1 litro", descripcion: "sabores: chicha morada, aguaymanto, limonada, maracuyá, mandarina, tuna", precio: "S/. 19.90" },
+      { nombre: "Refresco 1 litro - Arándanos", descripcion: "pedirlo helada o sin helar", precio: "S/. 22.00" }
+    ]
+  },
+  {
+    id: "frozen-pura-fruta",
+    nombre: "Frozen de Pura Fruta",
+    items: [
+      { nombre: "Frozen 2x", descripcion: "12 oz", precio: "S/. 19.90" },
+      { nombre: "Frozen 500 ml", descripcion: "sabores: tuna, arándanos, mango, aguaymanto, maracuyá, chicha, durazno, limón", precio: "S/. 14.90" }
+    ]
+  },
+  {
+    id: "cervezas",
+    nombre: "Cervezas",
+    items: [
+      { nombre: "Cerveza Blanca", descripcion: "Pilsen ó Cristal 620 ml", precio: "S/. 12.00" },
+      { nombre: "Cerveza Cusqueña", descripcion: "Malta, Dorada, Trigo, Red Lager 620 ml", precio: "S/. 14.00" },
+      { nombre: "Corona Personal", descripcion: "355 ml", precio: "S/. 15.00" },
+      { nombre: "Cervezas Personales", descripcion: "310 ml; Cusqueña, Malta, Dorada, Trigo, Red Lager", precio: "S/. 10.00" }
+    ]
+  },
+  {
+    id: "bebidas-calientes",
+    nombre: "Bebidas Calientes",
+    items: [
+      { nombre: "Manzanilla", precio: "S/. 5.00" },
+      { nombre: "Anís", precio: "S/. 5.00" },
+      { nombre: "Té", precio: "S/. 5.00" },
+      { nombre: "Flor de Jamaica", precio: "S/. 5.00" },
+      { nombre: "Frutos bosque", precio: "S/. 5.00" },
+      { nombre: "Café pasado", precio: "S/. 5.00" }
     ]
   }
 ];
