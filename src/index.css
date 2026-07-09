@@ -10,14 +10,14 @@
   --font-slogan: "Fredoka", sans-serif;  /* Tipografía para Eslogans/Marquee */
   
   /* COLORES DE EL BARQUERO (Estilo Náutico) */
-  --color-primary: #38bdf8;      /* Celeste / Azul claro (Velas) */
+  --color-primary: #0284c7;      /* Azul cielo más oscuro para contraste en modo claro */
   --color-secondary: #8B5A2B;    /* Marrón (Casco, mástiles y dirección) */
-  --color-dark: #FFFFFF;         /* Texto claro sobre fondo oscuro */
-  --color-light: #0d0f12;        /* Fondo general negro / gris muy oscuro */
+  --color-dark: #0f172a;         /* Texto oscuro sobre fondo claro (slate-900) */
+  --color-light: #f8fafc;        /* Fondo general claro (slate-50) */
   
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  --glass-bg: rgba(20, 24, 30, 0.95);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --shadow-glass: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
+  --glass-bg: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(15, 23, 42, 0.08);
 }
 
 body {
@@ -100,4 +100,100 @@ body {
   height: 3px;
   background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
   border-radius: 2px;
+}
+
+/* ==========================================
+   🔆 OVERRIDES PARA TEMA CLARO (LIGHT MODE)
+   ========================================== */
+
+/* Fondos Generales y Contenedores */
+.bg-\[\#0d0f12\], .bg-\[\#0d0f12\]\/95 {
+  background-color: #f8fafc !important; /* Fondo claro slate-50 */
+}
+.bg-\[\#14161e\] {
+  background-color: #ffffff !important; /* Tarjetas blancas */
+}
+.bg-\[\#1d202b\] {
+  background-color: #f1f5f9 !important; /* Controles slate-100 */
+}
+.bg-\[\#1a1d26\] {
+  background-color: #f1f5f9 !important; /* Contenedor de marcador de posición */
+}
+.bg-\[\#050608\] {
+  background-color: #f1f5f9 !important; /* Marquee background */
+}
+
+/* Bordes y Líneas Divisorias */
+.border-gray-950, 
+.border-gray-900\/60, 
+.border-gray-900, 
+.border-gray-800, 
+.border-gray-800\/80, 
+.border-gray-800\/45, 
+.border-gray-800\/85, 
+.border-gray-800\/40, 
+.border-gray-800\/60 {
+  border-color: #e2e8f0 !important; /* Borde suave slate-200 */
+}
+
+/* Textos Generales */
+.text-white {
+  color: #0f172a !important; /* Texto principal slate-900 */
+}
+.text-gray-300 {
+  color: #334155 !important; /* Texto secundario slate-700 */
+}
+.text-gray-400 {
+  color: #475569 !important; /* Texto terciario slate-600 */
+}
+.text-gray-500 {
+  color: #64748b !important; /* Texto atenuado slate-500 */
+}
+
+/* Hovers de Texto */
+.hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+/* Específicos para el Marquee */
+.animate-marquee {
+  color: #0369a1 !important; /* Sky-700 */
+}
+
+/* Excepciones: Elementos que deben mantener texto claro por contraste */
+.bg-\[\#25D366\] *, 
+.bg-\[\#25D366\],
+.bg-gradient-to-r *, 
+.bg-gradient-to-r,
+button[disabled],
+button[disabled] * {
+  /* No forzar texto oscuro */
+}
+
+/* Específicos para botones */
+.bg-\[\#25D366\], 
+.bg-\[\#25D366\] * {
+  color: #ffffff !important; /* Texto blanco en el botón de WhatsApp */
+}
+.bg-gradient-to-r, 
+.bg-gradient-to-r * {
+  color: #ffffff !important; /* Texto blanco en botones con degradado */
+}
+
+/* El botón celeste primario activo */
+.bg-primary {
+  background-color: #0284c7 !important;
+  color: #ffffff !important; /* Texto blanco sobre celeste primario oscuro */
+}
+.bg-primary * {
+  color: #ffffff !important;
+}
+.bg-primary\/10 {
+  background-color: rgba(2, 132, 199, 0.1) !important;
+}
+.bg-primary\/20 {
+  background-color: rgba(2, 132, 199, 0.2) !important;
+}
+.bg-primary\/30 {
+  background-color: rgba(2, 132, 199, 0.3) !important;
 }

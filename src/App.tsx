@@ -10,14 +10,30 @@ import { DEFAULT_MENU_DATA } from './data/menuData';
 const RESTAURANTE_NAME = "El Barquero Restaurant";
 const RESTAURANTE_SLOGAN = "Sabor Clásico & Tradición Marina";
 const RESTAURANTE_CONCEPT = "Restaurante peruano de carta amplia, con enfoque criollo-marino, platos de fondo, bar, vinos, bebidas y delivery.";
-const WHATSAPP_NUMBER = "51965383485"; // Celular/WhatsApp que inicia con 9
-const PHONE_NUMBER = "012632386"; // Teléfono fijo de llamadas que inicia con 01
+
+export const SEDES = {
+  tacna: {
+    nombre: "Jr. Tacna 885",
+    direccion: "Jr. Tacna 885, Magdalena del Mar",
+    whatsapp: "51993109737",
+    whatsappDisplay: "993 109 737",
+    mapsUrl: "https://maps.app.goo.gl/29NAHxRUxNXKeHgt9"
+  },
+  julio: {
+    nombre: "Jr. 28 de Julio 608",
+    direccion: "Jr. 28 de Julio 608, Magdalena del Mar",
+    whatsapp: "51944253190",
+    whatsappDisplay: "944 253 190",
+    mapsUrl: ""
+  }
+};
+
+const WHATSAPP_NUMBER = SEDES.tacna.whatsapp; // Teléfono fallback
 const ATTENTION_HOURS = "Lunes a domingo de 8:00 am a 11:00 pm";
 const DELIVERY_HOURS = "11:00 am a 10:00 pm";
 const CORKAGE_FEE = "Derecho de Corcho: S/. 3.00 por persona";
 const FACEBOOK_URL = "";
-const MAPS_URL = "https://maps.app.goo.gl/zq5rjzeKNGH7nvGeA";
-const MARQUEE_TEXT = "✨ ¡BIENVENIDOS A EL BARQUERO RESTAURANT! • PEDIDOS WHATSAPP: 965 383 485 • LLAMADAS DELIVERY: (01) 263 2386 • DE 11:00 AM A 10:00 PM • ";
+const MARQUEE_TEXT = "✨ ¡BIENVENIDOS A EL BARQUERO RESTAURANT! • PEDIDOS WHATSAPP: TACNA 993 109 737 / 28 DE JULIO 944 253 190 • DE 11:00 AM A 10:00 PM • ";
 // ==========================================
 
 interface Dish {
@@ -75,6 +91,7 @@ export default function App() {
   const [copiedYape, setCopiedYape] = useState(false);
   const [checkoutData, setCheckoutData] = useState({
     tipoEntrega: 'delivery', // 'delivery' | 'pickup'
+    sede: 'tacna' as 'tacna' | 'julio',
     nombre: '',
     telefono: '',
     // Delivery fields:
@@ -187,11 +204,13 @@ export default function App() {
 
   const sendToWhatsApp = () => {
     const total = calculateTotal();
+    const selectedSede = SEDES[checkoutData.sede];
     let message = `*Hola ${RESTAURANTE_NAME}, deseo realizar un pedido:*\n\n`;
     
     // Delivery or Pickup header
     if (checkoutData.tipoEntrega === 'delivery') {
       message += `*🛵 DETALLES DE ENTREGA (DELIVERY)*\n`;
+      message += `• *Sede Despachadora:* ${selectedSede.nombre}\n`;
       message += `• *Nombre:* ${checkoutData.nombre}\n`;
       message += `• *Teléfono:* ${checkoutData.telefono}\n`;
       message += `• *Dirección:* ${checkoutData.direccion}\n`;
@@ -204,6 +223,7 @@ export default function App() {
       }
     } else {
       message += `*🏪 DETALLES DE RECOJO (RETIRO EN LOCAL)*\n`;
+      message += `• *Sede de Recojo:* ${selectedSede.nombre} (${selectedSede.direccion})\n`;
       message += `• *Nombre:* ${checkoutData.nombre}\n`;
       message += `• *Teléfono:* ${checkoutData.telefono}\n`;
       message += `• *Hora aproximada:* ${checkoutData.horaRetiro || 'No indicada'}\n`;
@@ -236,7 +256,7 @@ export default function App() {
     
     message += `\n*💰 TOTAL A PAGAR: S/.${total.toFixed(2)}*`;
     
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${selectedSede.whatsapp}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
 
@@ -268,7 +288,8 @@ export default function App() {
   };
 
   const handleCopyYape = () => {
-    const cleanNumber = WHATSAPP_NUMBER.startsWith("51") ? WHATSAPP_NUMBER.slice(2) : WHATSAPP_NUMBER;
+    const selectedSede = SEDES[checkoutData.sede];
+    const cleanNumber = selectedSede.whatsapp.startsWith("51") ? selectedSede.whatsapp.slice(2) : selectedSede.whatsapp;
     navigator.clipboard.writeText(cleanNumber);
     setCopiedYape(true);
     setTimeout(() => setCopiedYape(false), 2000);
@@ -351,16 +372,6 @@ export default function App() {
           <img src="/header.png" alt="El Barquero Logo" className="h-16 w-auto object-contain" />
         </div>
         <div className="flex items-center gap-2">
-          {PHONE_NUMBER && (
-            <motion.a
-              href={`tel:${PHONE_NUMBER}`}
-              whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary cursor-pointer hover:bg-primary/20 transition-colors"
-              title="Llamar por teléfono"
-            >
-              <Phone size={18} />
-            </motion.a>
-          )}
           {WHATSAPP_NUMBER && (
             <motion.a
               href={`https://wa.me/${WHATSAPP_NUMBER}`}
@@ -371,21 +382,21 @@ export default function App() {
               title="Enviar WhatsApp"
             >
               <svg className="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.806-9.794.002-2.617-1.015-5.078-2.862-6.93C16.37 2.03 13.917.994 12.006.994 6.605.994 2.207 5.39 2.204 10.79c-.001 1.511.411 2.984 1.192 4.275L2.39 20.6l5.72-1.498c-1.12.72-1.12.72-.463.052z" />
+                <path d="M12.031 6.172c-3.281 0-5.953 2.672-5.953 5.953 0 1.047.281 2.063.82 2.953l-.531 1.953 2.016-.531c.859.469 1.844.719 2.859.719 3.281 0 5.953-2.672 5.953-5.953 0-3.281-2.672-5.953-5.953-5.953zm0 10.922c-.891 0-1.766-.234-2.516-.672l-1.812.484.484-1.766c-.453-.734-.688-1.578-.688-2.453 0-2.75 2.234-4.984 4.984-4.984s4.984 2.234 4.984 4.984c0 2.75-2.234 4.984-4.984 4.984zm2.734-3.641c-.078-.031-.469-.234-.547-.266-.078-.031-.141-.047-.203.047-.063.094-.234.297-.281.359-.047.063-.094.078-.172.031-.078-.031-.328-.125-.625-.391-.234-.203-.391-.453-.438-.547-.047-.094-.005-.141.047-.188.047-.047.094-.125.141-.188.047-.063.063-.109.094-.172.031-.063.016-.125-.008-.172-.031-.047-.281-.672-.391-.922-.094-.25-.188-.219-.25-.219-.063 0-.141-.016-.219-.016-.078 0-.203.031-.313.141-.109.109-.422.422-.422 1.031 0 .609.438 1.188.5 1.266.063.078.859 1.312 2.078 1.844.281.109.5.172.672.219.281.094.531.078.734.047.234-.031.734-.313.844-.609.109-.281.109-.531.078-.578-.031-.047-.094-.078-.203-.125z" />
               </svg>
             </motion.a>
           )}
-          {MAPS_URL && (
-            <motion.a
-              href={MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary cursor-pointer hover:bg-primary/20 transition-colors"
-            >
-              <MapPin size={18} />
-            </motion.a>
-          )}
+          <motion.div
+            onClick={() => {
+              const el = document.getElementById('sedes-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+            title="Ver ubicaciones y teléfonos de nuestras sedes"
+          >
+            <MapPin size={18} />
+          </motion.div>
           <motion.div
             onClick={() => cartCount > 0 && setShowSummary(true)}
             whileTap={{ scale: 0.95 }}
@@ -443,18 +454,86 @@ export default function App() {
                 <p className="text-gray-400 mt-0.5">{DELIVERY_HOURS}</p>
               </div>
             </div>
-            <div className="flex items-start gap-2">
-              <Phone size={13} className="text-primary shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-gray-300">Teléfono Delivery</p>
-                <a href={`tel:${PHONE_NUMBER}`} className="text-sky-400 hover:underline mt-0.5 block font-bold">(01) 263 2386</a>
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
+            <div className="flex items-start gap-2 col-span-2">
               <Wine size={13} className="text-primary shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-gray-300">Derecho de Corcho</p>
                 <p className="text-gray-400 mt-0.5">{CORKAGE_FEE}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SECCIÓN DE NUESTRAS SEDES */}
+      <div id="sedes-section" className="px-5 pt-4">
+        <div className="bg-[#14161e] border border-gray-900/60 rounded-3xl p-5 shadow-lg flex flex-col gap-4 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+          <div>
+            <h2 className="font-title text-[18px] text-primary font-bold leading-tight flex items-center gap-2">
+              <MapPin size={18} className="text-primary" />
+              Nuestras Sedes
+            </h2>
+            <p className="text-[10px] text-gray-400 mt-1 leading-relaxed">Visítanos o haz tu pedido a la sede más cercana</p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Sede Tacna */}
+            <div className="bg-[#1d202b] border border-gray-800/80 rounded-2xl p-4 flex flex-col justify-between gap-3">
+              <div>
+                <h3 className="font-title text-[15px] font-bold text-white leading-tight">
+                  Jr. Tacna 885
+                </h3>
+                <p className="text-[11px] text-gray-400 mt-1">Magdalena del Mar</p>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <a 
+                  href={SEDES.tacna.mapsUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl text-[10px] font-bold transition-colors cursor-pointer"
+                >
+                  <Navigation size={12} className="rotate-45" />
+                  Ver Mapa
+                </a>
+                <a 
+                  href={`https://wa.me/${SEDES.tacna.whatsapp}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] rounded-xl text-[10px] font-bold transition-colors cursor-pointer"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.281 0-5.953 2.672-5.953 5.953 0 1.047.281 2.063.82 2.953l-.531 1.953 2.016-.531c.859.469 1.844.719 2.859.719 3.281 0 5.953-2.672 5.953-5.953 0-3.281-2.672-5.953-5.953-5.953zm0 10.922c-.891 0-1.766-.234-2.516-.672l-1.812.484.484-1.766c-.453-.734-.688-1.578-.688-2.453 0-2.75 2.234-4.984 4.984-4.984s4.984 2.234 4.984 4.984c0 2.75-2.234 4.984-4.984 4.984zm2.734-3.641c-.078-.031-.469-.234-.547-.266-.078-.031-.141-.047-.203.047-.063.094-.234.297-.281.359-.047.063-.094.078-.172.031-.078-.031-.328-.125-.625-.391-.234-.203-.391-.453-.438-.547-.047-.094-.005-.141.047-.188.047-.047.094-.125.141-.188.047-.063.063-.109.094-.172.031-.063.016-.125-.008-.172-.031-.047-.281-.672-.391-.922-.094-.25-.188-.219-.25-.219-.063 0-.141-.016-.219-.016-.078 0-.203.031-.313.141-.109.109-.422.422-.422 1.031 0 .609.438 1.188.5 1.266.063.078.859 1.312 2.078 1.844.281.109.5.172.672.219.281.094.531.078.734.047.234-.031.734-.313.844-.609.109-.281.109-.531.078-.578-.031-.047-.094-.078-.203-.125z" />
+                  </svg>
+                  Wsp: {SEDES.tacna.whatsappDisplay}
+                </a>
+              </div>
+            </div>
+
+            {/* Sede 28 de Julio */}
+            <div className="bg-[#1d202b] border border-gray-800/80 rounded-2xl p-4 flex flex-col justify-between gap-3">
+              <div>
+                <h3 className="font-title text-[15px] font-bold text-white leading-tight">
+                  Jr. 28 de Julio 608
+                </h3>
+                <p className="text-[11px] text-gray-400 mt-1">Magdalena del Mar</p>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-800/50 text-gray-500 rounded-xl text-[10px] font-bold select-none">
+                  <Navigation size={12} className="rotate-45" />
+                  Sin Mapa
+                </span>
+                <a 
+                  href={`https://wa.me/${SEDES.julio.whatsapp}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] rounded-xl text-[10px] font-bold transition-colors cursor-pointer"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.281 0-5.953 2.672-5.953 5.953 0 1.047.281 2.063.82 2.953l-.531 1.953 2.016-.531c.859.469 1.844.719 2.859.719 3.281 0 5.953-2.672 5.953-5.953 0-3.281-2.672-5.953-5.953-5.953zm0 10.922c-.891 0-1.766-.234-2.516-.672l-1.812.484.484-1.766c-.453-.734-.688-1.578-.688-2.453 0-2.75 2.234-4.984 4.984-4.984s4.984 2.234 4.984 4.984c0 2.75-2.234 4.984-4.984 4.984zm2.734-3.641c-.078-.031-.469-.234-.547-.266-.078-.031-.141-.047-.203.047-.063.094-.234.297-.281.359-.047.063-.094.078-.172.031-.078-.031-.328-.125-.625-.391-.234-.203-.391-.453-.438-.547-.047-.094-.005-.141.047-.188.047-.047.094-.125.141-.188.047-.063.063-.109.094-.172.031-.063.016-.125-.008-.172-.031-.047-.281-.672-.391-.922-.094-.25-.188-.219-.25-.219-.063 0-.141-.016-.219-.016-.078 0-.203.031-.313.141-.109.109-.422.422-.422 1.031 0 .609.438 1.188.5 1.266.063.078.859 1.312 2.078 1.844.281.109.5.172.672.219.281.094.531.078.734.047.234-.031.734-.313.844-.609.109-.281.109-.531.078-.578-.031-.047-.094-.078-.203-.125z" />
+                  </svg>
+                  Wsp: {SEDES.julio.whatsappDisplay}
+                </a>
               </div>
             </div>
           </div>
@@ -783,6 +862,37 @@ export default function App() {
                 }}
                 className="space-y-3"
               >
+                {/* Sede Selector */}
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase ml-1 block mb-1.5">Seleccionar Sede *</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutData(prev => ({ ...prev, sede: 'tacna' }))}
+                      className={`py-2.5 rounded-xl text-center text-xs font-semibold border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer
+                        ${checkoutData.sede === 'tacna'
+                          ? 'bg-primary/20 text-primary border-primary'
+                          : 'bg-[#1d202b] text-gray-400 border-gray-800 hover:text-white'
+                        }`}
+                    >
+                      <span className="font-bold text-white text-[11px]">Jr. Tacna 885</span>
+                      <span className="text-[9px] opacity-80">Magdalena del Mar</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutData(prev => ({ ...prev, sede: 'julio' }))}
+                      className={`py-2.5 rounded-xl text-center text-xs font-semibold border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer
+                        ${checkoutData.sede === 'julio'
+                          ? 'bg-primary/20 text-primary border-primary'
+                          : 'bg-[#1d202b] text-gray-400 border-gray-800 hover:text-white'
+                        }`}
+                    >
+                      <span className="font-bold text-white text-[11px]">Jr. 28 de Julio 608</span>
+                      <span className="text-[9px] opacity-80">Magdalena del Mar</span>
+                    </button>
+                  </div>
+                </div>
+
                 {/* Personal Info */}
                 <div>
                   <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Nombre Completo *</label>
@@ -994,9 +1104,9 @@ export default function App() {
                       <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Pagar con Yape / Plin</label>
                       <div className="bg-[#1d202b] border border-gray-800 rounded-xl p-3.5 mt-1 flex justify-between items-center">
                         <div>
-                          <p className="text-[10px] text-gray-400 font-semibold">Número de Yape:</p>
+                          <p className="text-[10px] text-gray-400 font-semibold">Número de Yape ({SEDES[checkoutData.sede].nombre}):</p>
                           <p className="text-sm font-bold text-white tracking-wider mt-0.5">
-                            {WHATSAPP_NUMBER.startsWith("51") ? WHATSAPP_NUMBER.slice(2).replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3') : WHATSAPP_NUMBER}
+                            {SEDES[checkoutData.sede].whatsappDisplay}
                           </p>
                           <p className="text-[9px] text-gray-500 mt-0.5">Titular: El Barquero Restaurant</p>
                         </div>
@@ -1039,7 +1149,7 @@ export default function App() {
                     className="w-full bg-[#25D366] text-white py-3.5 rounded-xl flex items-center justify-center gap-2.5 shadow-xl shadow-green-900/20 hover:scale-[1.01] transition-all font-bold text-sm cursor-pointer"
                   >
                     <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.806-9.794.002-2.617-1.015-5.078-2.862-6.93C16.37 2.03 13.917.994 12.006.994 6.605.994 2.207 5.39 2.204 10.79c-.001 1.511.411 2.984 1.192 4.275L2.39 20.6l5.72-1.498c-1.12.72-1.12.72-.463.052z" />
+                      <path d="M12.031 6.172c-3.281 0-5.953 2.672-5.953 5.953 0 1.047.281 2.063.82 2.953l-.531 1.953 2.016-.531c.859.469 1.844.719 2.859.719 3.281 0 5.953-2.672 5.953-5.953 0-3.281-2.672-5.953-5.953-5.953zm0 10.922c-.891 0-1.766-.234-2.516-.672l-1.812.484.484-1.766c-.453-.734-.688-1.578-.688-2.453 0-2.75 2.234-4.984 4.984-4.984s4.984 2.234 4.984 4.984c0 2.75-2.234 4.984-4.984 4.984zm2.734-3.641c-.078-.031-.469-.234-.547-.266-.078-.031-.141-.047-.203.047-.063.094-.234.297-.281.359-.047.063-.094.078-.172.031-.078-.031-.328-.125-.625-.391-.234-.203-.391-.453-.438-.547-.047-.094-.005-.141.047-.188.047-.047.094-.125.141-.188.047-.063.063-.109.094-.172.031-.063.016-.125-.008-.172-.031-.047-.281-.672-.391-.922-.094-.25-.188-.219-.25-.219-.063 0-.141-.016-.219-.016-.078 0-.203.031-.313.141-.109.109-.422.422-.422 1.031 0 .609.438 1.188.5 1.266.063.078.859 1.312 2.078 1.844.281.109.5.172.672.219.281.094.531.078.734.047.234-.031.734-.313.844-.609.109-.281.109-.531.078-.578-.031-.047-.094-.078-.203-.125z" />
                     </svg>
                     Enviar a WhatsApp
                   </button>
