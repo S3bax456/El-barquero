@@ -591,12 +591,12 @@ export default function App() {
                   whileHover={{ y: -4 }}
                   className="bg-[#14161e] rounded-[1.5rem] overflow-hidden flex flex-col shadow-lg border border-gray-800/80 hover:border-primary/30 transition-all duration-200 group"
                 >
-                  <div className="bg-[#1a1d26] aspect-square flex items-center justify-center relative overflow-hidden p-4 border-b border-gray-900/60">
+                  <div className={`bg-[#1a1d26] aspect-square flex items-center justify-center relative overflow-hidden border-b border-gray-900/60 ${dish.imagen ? '' : 'p-4'}`}>
                     {dish.imagen ? (
                       <img 
                         src={dish.imagen} 
                         alt={dish.nombre} 
-                        className="object-cover w-full h-full rounded-lg"
+                        className="object-cover w-full h-full"
                       />
                     ) : (
                       <div className="flex flex-col items-center justify-center text-center opacity-40">
