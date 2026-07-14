@@ -55,6 +55,69 @@ interface CartItem {
   cantidad: number;
 }
 
+const optimizeImageUrl = (url: string): string => {
+  if (!url) return '';
+  
+  // Google Drive url formats
+  const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|uc\?(?:export=view&)?id=|open\?id=)|docs\.google\.com\/uc\?id=)([a-zA-Z0-9_-]{25,})/;
+  const match = url.match(driveRegex);
+  if (match && match[1]) {
+    const fileId = match[1];
+    // Return Google User Content optimized URL with 400px width (highly compressed WebP)
+    return `https://lh3.googleusercontent.com/d/${fileId}=w400`;
+  }
+  
+  return url;
+};
+
+function LazyImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const imgRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '300px' }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const optimizedSrc = useMemo(() => {
+    return optimizeImageUrl(src);
+  }, [src]);
+
+  return (
+    <div ref={imgRef} className="relative w-full h-full bg-[#161822] overflow-hidden rounded-lg">
+      {/* Shimmer skeleton */}
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-[#1e2230] to-gray-900 animate-pulse shimmer"></div>
+      )}
+      
+      {isInView && (
+        <img
+          src={optimizedSrc}
+          alt={alt}
+          onLoad={() => setIsLoaded(true)}
+          className={`${className} transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -369,7 +432,7 @@ export default function App() {
       {/* STICKY HEADER */}
       <header className="sticky top-0 bg-[#0d0f12]/95 backdrop-blur-md z-50 px-5 py-4 flex justify-between items-center border-b border-gray-950">
         <div className="flex items-center">
-          <img src="/header.png" alt="El Barquero Logo" className="h-16 w-auto object-contain" />
+          <img src="/header.webp" alt="El Barquero Logo" className="h-16 w-auto object-contain" />
         </div>
         <div className="flex items-center gap-2">
           {WHATSAPP_NUMBER && (
@@ -381,7 +444,7 @@ export default function App() {
               className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary cursor-pointer hover:bg-primary/20 transition-colors"
               title="Enviar WhatsApp"
             >
-              <img src="/wsp logo.png" alt="WhatsApp" className="w-[18px] h-[18px] object-contain" />
+              <img src="/wsp_logo.webp" alt="WhatsApp" className="w-[18px] h-[18px] object-contain" />
             </motion.a>
           )}
           <motion.div
@@ -422,7 +485,7 @@ export default function App() {
       {/* BANNER */}
       <div className="px-5 pt-4 pb-1">
         <div className="relative w-full rounded-3xl overflow-hidden shadow-xl aspect-[1.6/1]">
-          <img src="/banner.jpg" alt="El Barquero Banner" className="w-full h-full object-cover" />
+          <img src="/banner.webp" alt="El Barquero Banner" className="w-full h-full object-cover" />
         </div>
       </div>
 
@@ -500,7 +563,7 @@ export default function App() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] rounded-xl text-[10px] font-bold transition-colors cursor-pointer"
                 >
-                  <img src="/wsp logo.png" alt="WhatsApp" className="w-3.5 h-3.5 object-contain" />
+                  <img src="/wsp_logo.webp" alt="WhatsApp" className="w-3.5 h-3.5 object-contain" />
                   Wsp: {SEDES.tacna.whatsappDisplay}
                 </a>
               </div>
@@ -525,7 +588,7 @@ export default function App() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] rounded-xl text-[10px] font-bold transition-colors cursor-pointer"
                 >
-                  <img src="/wsp logo.png" alt="WhatsApp" className="w-3.5 h-3.5 object-contain" />
+                  <img src="/wsp_logo.webp" alt="WhatsApp" className="w-3.5 h-3.5 object-contain" />
                   Wsp: {SEDES.julio.whatsappDisplay}
                 </a>
               </div>
@@ -593,7 +656,7 @@ export default function App() {
                 >
                   <div className={`bg-[#1a1d26] aspect-square flex items-center justify-center relative overflow-hidden border-b border-gray-900/60 ${dish.imagen ? '' : 'p-4'}`}>
                     {dish.imagen ? (
-                      <img 
+                      <LazyImage 
                         src={dish.imagen} 
                         alt={dish.nombre} 
                         className="object-cover w-full h-full"
@@ -1142,7 +1205,7 @@ export default function App() {
                     type="submit"
                     className="w-full bg-[#25D366] text-white py-3.5 rounded-xl flex items-center justify-center gap-2.5 shadow-xl shadow-green-900/20 hover:scale-[1.01] transition-all font-bold text-sm cursor-pointer"
                   >
-                    <img src="/wsp logo.png" alt="WhatsApp" className="w-5 h-5 shrink-0 object-contain brightness-0 invert" />
+                    <img src="/wsp_logo.webp" alt="WhatsApp" className="w-5 h-5 shrink-0 object-contain brightness-0 invert" />
                     Enviar a WhatsApp
                   </button>
                 </div>
