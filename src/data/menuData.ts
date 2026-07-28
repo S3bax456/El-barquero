@@ -205,7 +205,6 @@ export const DEFAULT_MENU_DATA: Category[] = [
       { nombre: "Jalea de Pescado", precio: "S/. 42.00", imagen: "/jalea-de-pescado.png" },
       { nombre: "Jalea de Trucha", precio: "S/. 42.00", imagen: "/jalea-de-trucha.png" },
       { nombre: "Jalea Mixta", precio: "S/. 47.00", imagen: "/jalea-mixta.png" },
-      { nombre: "Jalea de Trucha (Repetido)", descripcion: "El nombre aparece repetido en la carta original.", precio: "S/. 42.00", imagen: "/jalea-de-trucha-repetido.png" },
       { nombre: "Chicharrón de Trucha", precio: "S/. 42.00", imagen: "/chicharron-de-trucha.png" },
       { nombre: "Chicharrón de Pescado", precio: "S/. 42.00", imagen: "/chicharron-de-pescado.png" },
       { nombre: "Chicharrón de Calamar", precio: "S/. 48.00", imagen: "/chicharron-de-calamar.jpg" },
@@ -239,6 +238,7 @@ export const DEFAULT_MENU_DATA: Category[] = [
       { nombre: "Chita Frita al Ajo en Hojuelas", descripcion: "600 gr.", precio: "S/. 79.90", imagen: "/chita-frita-al-ajo-en-hojuelas.jpg" },
       { nombre: "Chita Frita", descripcion: "600 gr.", precio: "S/. 79.90", imagen: "/chita-frita.png" },
       { nombre: "Lenguado Frito", descripcion: "600 gr.", precio: "S/. 79.90", imagen: "/lenguado-frito.png" },
+      { nombre: "Corvina Frita", descripcion: "600 gr.", precio: "S/. 69.90", imagen: "/corvina-frita.png" },
       { nombre: "Cabrilla Frita", descripcion: "600 gr.", precio: "S/. 48.00", imagen: "/cabrilla-frita.png" },
       { nombre: "Tramboyo Frito", descripcion: "600 gr.", precio: "S/. 48.00", imagen: "/tramboyo-frito.png" },
       { nombre: "Trucha Frita c/yucas Fritas", precio: "S/. 38.00", imagen: "/trucha-frita-c-yucas-fritas.png" }
